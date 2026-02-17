@@ -15,10 +15,13 @@ Usage:
 """
 
 import argparse
+import atexit
 import html
+import json
 import os
 import re
 import shutil
+import signal
 import ssl
 import subprocess
 import sys
@@ -29,6 +32,7 @@ DEFAULT_PORT = 9443
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_DIR = os.path.join(".claude", "logs")
 DEFAULT_CERT_DIR = os.path.join(".claude", "certs")
+PID_FILE = os.path.join(".claude", "serve-sessions.pid")
 CERT_FILE = "localhost.pem"
 KEY_FILE = "localhost-key.pem"
 
@@ -89,10 +93,12 @@ HTML_TEMPLATE = """\
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     padding: 0.2rem;
     line-height: 1;
   }}
+  html[data-theme="dark"] .theme-toggle {{ color: #e6edf3; }}
+  html[data-theme="light"] .theme-toggle {{ color: #1f2328; }}
   #content {{ display: none; }}
 </style>
 </head>
@@ -160,10 +166,12 @@ INDEX_TEMPLATE = """\
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     padding: 0.2rem;
     line-height: 1;
   }}
+  html[data-theme="dark"] .theme-toggle {{ color: #e6edf3; }}
+  html[data-theme="light"] .theme-toggle {{ color: #1f2328; }}
   a {{ color: #58a6ff; text-decoration: none; }}
   a:hover {{ text-decoration: underline; }}
   .session {{
@@ -438,9 +446,25 @@ def main():
     host_display = "localhost" if args.host == "127.0.0.1" else args.host
     url = f"{protocol}://{host_display}:{args.port}"
 
+    # Write PID file so background callers can verify the server started
+    pid_info = {"pid": os.getpid(), "url": url}
+    os.makedirs(os.path.dirname(PID_FILE), exist_ok=True)
+    with open(PID_FILE, "w") as f:
+        json.dump(pid_info, f)
+
+    def cleanup_pid():
+        try:
+            os.remove(PID_FILE)
+        except OSError:
+            pass
+
+    atexit.register(cleanup_pid)
+    signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
+
     print(flush=True)
     print(f"  Serving session logs at {url}", flush=True)
     print(f"  Log directory: {args.dir}", flush=True)
+    print(f"  PID file: {PID_FILE}", flush=True)
     print(f"  Press Ctrl+C to stop.", flush=True)
     print(flush=True)
 

@@ -100,6 +100,8 @@ node .claude/serve-sessions.js
 
 HTTPS is enabled by default with an auto-generated self-signed certificate (requires `openssl`). Certs are stored in `.claude/certs/`.
 
+On startup, the server writes `.claude/serve-sessions.pid` with its PID and URL. This file is removed on clean shutdown.
+
 Options:
 
 ```

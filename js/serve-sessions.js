@@ -25,6 +25,7 @@ const DEFAULT_PORT = 9443;
 const DEFAULT_HOST = "127.0.0.1";
 const DEFAULT_DIR = path.join(".claude", "logs");
 const DEFAULT_CERT_DIR = path.join(".claude", "certs");
+const PID_FILE = path.join(".claude", "serve-sessions.pid");
 const CERT_FILE = "localhost.pem";
 const KEY_FILE = "localhost-key.pem";
 
@@ -79,10 +80,12 @@ const HTML_TEMPLATE = `<!DOCTYPE html>
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     padding: 0.2rem;
     line-height: 1;
   }
+  html[data-theme="dark"] .theme-toggle { color: #e6edf3; }
+  html[data-theme="light"] .theme-toggle { color: #1f2328; }
   #content { display: none; }
 </style>
 </head>
@@ -148,10 +151,12 @@ const INDEX_TEMPLATE = `<!DOCTYPE html>
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     padding: 0.2rem;
     line-height: 1;
   }
+  html[data-theme="dark"] .theme-toggle { color: #e6edf3; }
+  html[data-theme="light"] .theme-toggle { color: #1f2328; }
   a { color: #58a6ff; text-decoration: none; }
   a:hover { text-decoration: underline; }
   .session {
@@ -452,12 +457,26 @@ function main() {
   server.listen(args.port, args.host, () => {
     const hostDisplay = args.host === "127.0.0.1" ? "localhost" : args.host;
     const url = `${protocol}://${hostDisplay}:${args.port}`;
+
+    // Write PID file so background callers can verify the server started
+    const pidInfo = JSON.stringify({ pid: process.pid, url });
+    fs.mkdirSync(path.dirname(PID_FILE), { recursive: true });
+    fs.writeFileSync(PID_FILE, pidInfo);
+
     console.log();
     console.log(`  Serving session logs at ${url}`);
     console.log(`  Log directory: ${args.dir}`);
+    console.log(`  PID file: ${PID_FILE}`);
     console.log("  Press Ctrl+C to stop.");
     console.log();
   });
+
+  function cleanupPid() {
+    try { fs.unlinkSync(PID_FILE); } catch {}
+  }
+  process.on("exit", cleanupPid);
+  process.on("SIGTERM", () => process.exit(0));
+  process.on("SIGINT", () => process.exit(0));
 }
 
 main();

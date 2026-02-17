@@ -9,6 +9,7 @@ Usage:
     python3 tests/test_serve.py --js-only
 """
 
+import json
 import os
 import shutil
 import ssl
@@ -211,6 +212,20 @@ class ServeHTTPSTestBase:
     def test_cors_header(self):
         headers = _fetch_headers(self.base_url + "/", use_ssl=True)
         self.assertEqual(headers.get("Access-Control-Allow-Origin"), "*")
+
+    # --- PID file ---
+
+    def test_pid_file_created(self):
+        """Server writes a PID file with pid and url on startup."""
+        pid_path = os.path.join(self.tmpdir, ".claude", "serve-sessions.pid")
+        self.assertTrue(os.path.isfile(pid_path), "PID file not found")
+
+        with open(pid_path, "r") as f:
+            info = json.load(f)
+
+        self.assertEqual(info["pid"], self.server.pid)
+        self.assertIn("https://", info["url"])
+        self.assertIn(str(self.port), info["url"])
 
     # --- Empty directory ---
 
