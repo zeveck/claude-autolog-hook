@@ -15,7 +15,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 HOOKS_DIR = os.path.join(".claude", "hooks")
 SETTINGS_FILE = os.path.join(".claude", "settings.json")
 
-HOOK_SCRIPTS = ["stop-log.py", "subagent-stop-log.py", "log-converter.py"]
+HOOK_SCRIPTS = ["stop-log.py", "subagent-stop-log.py", "log-converter.py", "serve.py"]
 
 HOOKS_CONFIG = {
     "Stop": [{"hooks": [{"type": "command", "command": "python3 .claude/hooks/stop-log.py"}]}],

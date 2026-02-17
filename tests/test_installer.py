@@ -66,7 +66,7 @@ class InstallerTestBase:
     @property
     def _expected_scripts(self):
         ext = self._ext
-        return [f"stop-log{ext}", f"subagent-stop-log{ext}", f"log-converter{ext}"]
+        return [f"stop-log{ext}", f"subagent-stop-log{ext}", f"log-converter{ext}", f"serve{ext}"]
 
     @property
     def _runtime_cmd(self):

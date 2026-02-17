@@ -76,18 +76,18 @@ Logs write to `.claude/logs/` relative to the project root.
 
 ## Serve
 
-Browse and share your session logs over HTTP. Start the server from your project root:
+Browse and share your session logs over HTTP. The serve script is copied into your project during installation. Start from your project root:
 
 **Python:**
 
 ```
-python3 /path/to/cc-session-logger/py/serve.py
+python3 .claude/hooks/serve.py
 ```
 
 **Node.js:**
 
 ```
-node /path/to/cc-session-logger/js/serve.js
+node .claude/hooks/serve.js
 ```
 
 Options:

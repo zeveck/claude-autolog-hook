@@ -15,7 +15,7 @@ const readline = require("readline");
 const SCRIPT_DIR = __dirname;
 const HOOKS_DIR = path.join(".claude", "hooks");
 const SETTINGS_FILE = path.join(".claude", "settings.json");
-const HOOK_SCRIPTS = ["stop-log.js", "subagent-stop-log.js", "log-converter.js"];
+const HOOK_SCRIPTS = ["stop-log.js", "subagent-stop-log.js", "log-converter.js", "serve.js"];
 
 const HOOKS_CONFIG = {
   Stop: [{ hooks: [{ type: "command", command: "node .claude/hooks/stop-log.js" }] }],
