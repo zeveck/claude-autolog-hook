@@ -2,7 +2,7 @@
 /**
  * Session logger hook for subagents. Runs on the SubagentStop event.
  *
- * Parallel to stop-log.js but reads subagent-specific fields. Exits 0 always.
+ * Parallel to stop-log.cjs but reads subagent-specific fields. Exits 0 always.
  */
 
 const fs = require("fs");
@@ -112,7 +112,7 @@ function main() {
 
   try {
     execFileSync(process.execPath, [
-      path.join(scriptDir, "log-converter.js"),
+      path.join(scriptDir, "log-converter.cjs"),
       "--transcript", transcriptPath,
       "--output", logFile,
       "--session-id", sessionId,

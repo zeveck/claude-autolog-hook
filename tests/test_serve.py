@@ -1,4 +1,4 @@
-"""Tests for serve-sessions.py and serve-sessions.js log servers.
+"""Tests for serve-sessions.py and serve-sessions.cjs log servers.
 
 Verifies HTTPS default, HTTP fallback, strict filename parsing,
 session labels, index, raw markdown, rendered HTML, and 404 handling.
@@ -22,7 +22,7 @@ import urllib.request
 
 PKG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY_SERVE = os.path.join(PKG_DIR, "py", "serve-sessions.py")
-JS_SERVE = os.path.join(PKG_DIR, "js", "serve-sessions.js")
+JS_SERVE = os.path.join(PKG_DIR, "js", "serve-sessions.cjs")
 
 _PY_ONLY = "--py-only" in sys.argv
 _JS_ONLY = "--js-only" in sys.argv

@@ -3,7 +3,7 @@
  * Session logger hook. Runs on the Stop event.
  *
  * Reads hook input from stdin, extracts the transcript path, and calls
- * log-converter.js to produce a readable markdown log. Exits 0 always.
+ * log-converter.cjs to produce a readable markdown log. Exits 0 always.
  */
 
 const fs = require("fs");
@@ -111,7 +111,7 @@ function main() {
 
   try {
     execFileSync(process.execPath, [
-      path.join(scriptDir, "log-converter.js"),
+      path.join(scriptDir, "log-converter.cjs"),
       "--transcript", transcriptPath,
       "--output", logFile,
       "--session-id", sessionId,

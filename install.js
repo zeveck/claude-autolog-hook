@@ -16,12 +16,12 @@ const readline = require("readline");
 const SCRIPT_DIR = __dirname;
 const HOOKS_DIR = path.join(".claude", "hooks");
 const SETTINGS_FILE = path.join(".claude", "settings.json");
-const HOOK_SCRIPTS = ["stop-log.js", "subagent-stop-log.js", "log-converter.js"];
-const SERVE_SCRIPT = "serve-sessions.js";
+const HOOK_SCRIPTS = ["stop-log.cjs", "subagent-stop-log.cjs", "log-converter.cjs"];
+const SERVE_SCRIPT = "serve-sessions.cjs";
 
 const HOOKS_CONFIG = {
-  Stop: [{ hooks: [{ type: "command", command: "node .claude/hooks/stop-log.js" }] }],
-  SubagentStop: [{ hooks: [{ type: "command", command: "node .claude/hooks/subagent-stop-log.js" }] }],
+  Stop: [{ hooks: [{ type: "command", command: "node .claude/hooks/stop-log.cjs" }] }],
+  SubagentStop: [{ hooks: [{ type: "command", command: "node .claude/hooks/subagent-stop-log.cjs" }] }],
 };
 
 function ask(rl, question, defaultVal) {
@@ -82,7 +82,7 @@ async function main() {
 
   // --- Check for existing installation ---
 
-  if (fs.existsSync(path.join(HOOKS_DIR, "stop-log.js"))) {
+  if (fs.existsSync(path.join(HOOKS_DIR, "stop-log.cjs"))) {
     const overwrite = await askYn(rl, "Hooks already installed. Overwrite?");
     if (!overwrite) {
       console.log();

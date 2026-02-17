@@ -30,7 +30,7 @@ The `--tz` flag sets the timezone for log timestamps (e.g. `America/New_York`, `
 
 Both installers:
 - Copy hook scripts to `.claude/hooks/`
-- Copy serve script to `.claude/serve-sessions.{py,js}`
+- Copy serve script to `.claude/serve-sessions.{py,cjs}`
 - Merge hook config into `.claude/settings.json`
 
 Restart Claude Code after installing.
@@ -73,7 +73,7 @@ Python: `stop-log.py` and `subagent-stop-log.py`
 TZ = os.environ.get("TZ", "America/New_York")
 ```
 
-Node.js: `stop-log.js` and `subagent-stop-log.js`
+Node.js: `stop-log.cjs` and `subagent-stop-log.cjs`
 ```javascript
 const TZ = process.env.TZ || "America/New_York";
 ```
@@ -95,7 +95,7 @@ python3 .claude/serve-sessions.py
 **Node.js:**
 
 ```
-node .claude/serve-sessions.js
+node .claude/serve-sessions.cjs
 ```
 
 HTTPS is enabled by default with an auto-generated self-signed certificate (requires `openssl`). Certs are stored in `.claude/certs/`.

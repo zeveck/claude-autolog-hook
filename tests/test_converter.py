@@ -1,4 +1,4 @@
-"""Tests for log-converter.py and log-converter.js.
+"""Tests for log-converter.py and log-converter.cjs.
 
 Runs both converters against the same fixtures and asserts on output.
 
@@ -16,7 +16,7 @@ import unittest
 
 PKG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY_CONVERTER = os.path.join(PKG_DIR, "py", "log-converter.py")
-JS_CONVERTER = os.path.join(PKG_DIR, "js", "log-converter.js")
+JS_CONVERTER = os.path.join(PKG_DIR, "js", "log-converter.cjs")
 FIXTURES_DIR = os.path.join(PKG_DIR, "tests", "fixtures")
 
 # Determine which runtimes to test based on CLI flags

@@ -64,7 +64,7 @@ class InstallerTestBase:
 
     @property
     def _ext(self):
-        return "." + self.runtime
+        return ".cjs" if self.runtime == "js" else ".py"
 
     @property
     def _expected_scripts(self):

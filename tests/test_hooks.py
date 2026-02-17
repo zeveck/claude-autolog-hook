@@ -1,4 +1,4 @@
-"""Tests for stop-log.py/js and subagent-stop-log.py/js hook scripts.
+"""Tests for stop-log.py/cjs and subagent-stop-log.py/cjs hook scripts.
 
 Tests timestamp extraction, filename generation, and end-to-end log creation.
 
@@ -57,6 +57,10 @@ class HookTestBase:
             with open(dst, "w") as f:
                 f.write(content)
 
+    @property
+    def _ext(self):
+        return ".cjs" if self.runtime == "js" else ".py"
+
     def tearDown(self):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
@@ -79,7 +83,7 @@ class HookTestBase:
     def test_creates_log_file(self):
         """Hook creates a log file with correct naming convention."""
         fixture = os.path.join(FIXTURES_DIR, "basic.jsonl")
-        ext = "." + self.runtime
+        ext = self._ext
         script = "stop-log" + ext
 
         result = self._run_hook(script, {
@@ -107,7 +111,7 @@ class HookTestBase:
     def test_log_file_content(self):
         """Hook produces a log with header and body content."""
         fixture = os.path.join(FIXTURES_DIR, "basic.jsonl")
-        ext = "." + self.runtime
+        ext = self._ext
         script = "stop-log" + ext
 
         self._run_hook(script, {
@@ -125,7 +129,7 @@ class HookTestBase:
     def test_null_timestamp_handling(self):
         """Hook handles transcripts where first records have null timestamps."""
         fixture = os.path.join(FIXTURES_DIR, "null-timestamp.jsonl")
-        ext = "." + self.runtime
+        ext = self._ext
         script = "stop-log" + ext
 
         result = self._run_hook(script, {
@@ -145,7 +149,7 @@ class HookTestBase:
 
     def test_invalid_json_stdin(self):
         """Hook exits 0 on invalid JSON stdin."""
-        ext = "." + self.runtime
+        ext = self._ext
         script = "stop-log" + ext
         script_path = os.path.join(self.hooks_dir, script)
 
@@ -162,7 +166,7 @@ class HookTestBase:
 
     def test_missing_transcript_file(self):
         """Hook exits 0 when transcript file doesn't exist."""
-        ext = "." + self.runtime
+        ext = self._ext
         script = "stop-log" + ext
 
         result = self._run_hook(script, {
@@ -173,7 +177,7 @@ class HookTestBase:
 
     def test_empty_stdin(self):
         """Hook exits 0 on empty stdin."""
-        ext = "." + self.runtime
+        ext = self._ext
         script = "stop-log" + ext
         script_path = os.path.join(self.hooks_dir, script)
 
@@ -191,7 +195,7 @@ class HookTestBase:
     def test_no_error_log_on_success(self):
         """Successful run should not leave a .converter-errors.log file."""
         fixture = os.path.join(FIXTURES_DIR, "basic.jsonl")
-        ext = "." + self.runtime
+        ext = self._ext
         script = "stop-log" + ext
 
         self._run_hook(script, {
@@ -208,7 +212,7 @@ class HookTestBase:
     def test_subagent_creates_log(self):
         """Subagent hook creates log with agent type and ID in filename."""
         fixture = os.path.join(FIXTURES_DIR, "basic.jsonl")
-        ext = "." + self.runtime
+        ext = self._ext
         script = "subagent-stop-log" + ext
 
         result = self._run_hook(script, {
@@ -232,7 +236,7 @@ class HookTestBase:
     def test_subagent_header_content(self):
         """Subagent log contains proper subagent header."""
         fixture = os.path.join(FIXTURES_DIR, "basic.jsonl")
-        ext = "." + self.runtime
+        ext = self._ext
         script = "subagent-stop-log" + ext
 
         self._run_hook(script, {
@@ -251,7 +255,7 @@ class HookTestBase:
 
     def test_subagent_missing_transcript(self):
         """Subagent hook exits 0 when transcript doesn't exist."""
-        ext = "." + self.runtime
+        ext = self._ext
         script = "subagent-stop-log" + ext
 
         result = self._run_hook(script, {
