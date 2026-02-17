@@ -76,7 +76,7 @@ def main():
     os.makedirs(HOOKS_DIR, exist_ok=True)
 
     for script in HOOK_SCRIPTS:
-        src = os.path.join(SCRIPT_DIR, script)
+        src = os.path.join(SCRIPT_DIR, "py", script)
         dst = os.path.join(HOOKS_DIR, script)
 
         with open(src, "r") as f:

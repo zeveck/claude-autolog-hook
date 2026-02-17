@@ -4,14 +4,23 @@ Automatically converts Claude Code JSONL transcripts into readable markdown logs
 
 ## Install
 
-Clone this repo, then run the installer from your project directory:
+Clone this repo, then run the installer from your project directory. Pick whichever runtime you prefer:
+
+**Python:**
 
 ```
 cd your-project
 python3 /path/to/claude-session-logger/install.py
 ```
 
-The installer will:
+**Node.js:**
+
+```
+cd your-project
+node /path/to/claude-session-logger/install.js
+```
+
+Both installers:
 - Copy hook scripts to `.claude/hooks/`
 - Merge hook config into `.claude/settings.json`
 - Prompt for your timezone
@@ -20,7 +29,9 @@ Restart Claude Code after installing.
 
 ### Requirements
 
-- **python3** (3.9+) — the only dependency
+One of:
+- **python3** (3.9+)
+- **node** (18+)
 
 ## Output
 
@@ -47,23 +58,25 @@ The body renders user prompts, assistant responses, tool calls with results, and
 
 ### Timezone
 
-Set during installation. To change later, edit the `TZ` line in both `.claude/hooks/stop-log.py` and `.claude/hooks/subagent-stop-log.py`:
+Set during installation. To change later, edit the `TZ` line in both hook scripts in `.claude/hooks/`:
 
+Python: `stop-log.py` and `subagent-stop-log.py`
 ```python
 TZ = os.environ.get("TZ", "America/New_York")
 ```
 
+Node.js: `stop-log.js` and `subagent-stop-log.js`
+```javascript
+const TZ = process.env.TZ || "America/New_York";
+```
+
 ### Log directory
 
-Logs write to `.claude/logs/` relative to the project root. This is not configurable without editing the hook scripts.
+Logs write to `.claude/logs/` relative to the project root.
 
 ## Uninstall
 
-```
-rm .claude/hooks/stop-log.py .claude/hooks/subagent-stop-log.py .claude/hooks/log-converter.py
-```
-
-Then remove the `Stop` and `SubagentStop` entries from `.claude/settings.json`.
+Remove the hook scripts from `.claude/hooks/` and the `Stop` and `SubagentStop` entries from `.claude/settings.json`.
 
 ## License
 
